@@ -1,5 +1,6 @@
 import { act } from "react-dom/test-utils";
 import { cleanup, fireEvent, render } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import App from "../src/App";
 import axios from "axios";
 
@@ -12,7 +13,11 @@ describe("App Component", () => {
         data: { logged: null },
       });
 
-      render(<App />);
+      render(
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      );
 
       // Wait for the minimum time for a request to happen
       await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
@@ -56,7 +61,11 @@ describe("App Component", () => {
         data: { logged: true, balance: 100, email: "test@example.com" },
       });
 
-      render(<App />);
+      render(
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      );
 
       // Wait for the minimum time for a request to happen
       await act(() => new Promise((resolve) => setTimeout(resolve, 0)));

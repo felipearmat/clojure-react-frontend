@@ -11,27 +11,29 @@
     "prettify": "prettier --write ."
   },
   "dependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@mui/icons-material": "5.11.16",
     "@mui/x-data-grid": "^6.16.2",
     "axios": "^1.5.1",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "6.10.0",
-    "react-scripts": "^5.0.1",
-    "react": "^18.2.0"
+    "react-scripts": "^5.0.1"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.12",
+    "@mui/system": "^5.14.12",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "babel-jest": "^29.7.0",
     "babel-preset-env": "^1.7.0",
-    "eslint": "^8.51.0",
+    "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.0.0",
+    "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-jest": "^27.4.2",
     "eslint-plugin-prettier": "^5.0.0",

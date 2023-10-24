@@ -1,4 +1,5 @@
 import { act, cleanup, fireEvent, render } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import axios from "axios";
 import Calculator from "../../src/components/Calculator";
 
@@ -6,7 +7,11 @@ var targetElement = null;
 
 describe("Calculator component", () => {
   beforeEach(() => {
-    render(<Calculator />);
+    render(
+      <MemoryRouter>
+        <Calculator />
+      </MemoryRouter>
+    );
   });
 
   afterEach(cleanup);
