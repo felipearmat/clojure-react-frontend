@@ -1,0 +1,30 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Setting default shell to sh
+RUN npm config set shell sh
+
+# Install basic node.js server
+RUN npm install -g serve
+
+# EXPOSE is merely a hint that a certain ports are useful
+EXPOSE 8080
+
+# default port to run the app
+ENV PORT=8080
+
+# Copy project to container
+COPY . /app
+
+# Install prod dependencies
+RUN npm install --omit=dev
+
+# Copy .bin files so it can run npm command on development
+RUN cp /app/node_modules/.bin/* /usr/local/bin/
+
+# Build app
+RUN npm run build
+
+# Start the node dev server
+CMD [ "serve", "-s", "build" ]

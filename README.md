@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+# Front-End for Clojure/React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
+
+This repository contains the front-end Single Page Application (SPA) designed to work seamlessly with the Clojure/React application. For the guide to the entire application, refer to the [Clojure/React App](https://github.com/felipearmat/clojure-react-app).
+
+This project was created using [Create React App](https://github.com/facebook/create-react-app).
+
+## Requirements
+
+Before you begin, ensure you have the following software installed on your computer:
+
+- [Docker](https://docs.docker.com/engine/install/)
+
+## Application Stack
+
+This project consists of the following components:
+
+- **public**: The "public" folder contains assets like HTML and CSS files.
+
+- **src**: The "src" folder is where the source code of the project is located.
+
+- **tests**: The "tests" folder keeps project unit and/or integration tests.
+
+- **Dockerfile**: The Dockerfile with instructions for building a Docker container for this project.
+
+- **run.sh**: A shell script for making the starting of the container easier.
+
+### Running the Application
+
+To start this application without the back-end, proxy, and Postgres database, execute the following command:
+
+```shell
+docker build . -t clojure-react-app-frontend
+
+docker run --rm -it -p 8080:8080 -v ./:/app clojure-react-app-frontend /bin/sh
+```
+
+Once you access the container, you can run the [Available Scripts](#available-scripts).
 
 ## Available Scripts
 
-In the project directory, you can run:
+Once you access the shell terminal of this project (via Docker or installing locally), you can utilize the following scripts:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Launches the application in development mode. Open [http://localhost:8080](http://localhost:8080) in your web browser to preview your application.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The page automatically reloads when you make changes, and any lint errors are displayed in the console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Starts the test runner in interactive watch mode. For more information on running tests, refer to the [running tests section](https://facebook.github.io/create-react-app/docs/running-tests).
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Builds the application for production, placing the optimized production files in the `build` folder. This process minifies the code and assigns filenames with unique hashes for optimal performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+With the build complete, your application is ready for deployment. For detailed information on deployment, see the [deployment section](https://facebook.github.io/create-react-app/docs/deployment).
 
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Please Note: Ejecting is a one-way operation, and it cannot be undone.**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+If you're unsatisfied with the build tool and configuration options, you have the option to "eject" at any time. This command removes the single build dependency from your project and copies all configuration files and transitive dependencies (webpack, Babel, ESLint, etc.) directly into your project. This gives you complete control over these dependencies. While most commands will continue to work, they will refer to the copied scripts, allowing for customization. You do not have to use "eject" if you're satisfied with the default configuration. The curated feature set is suitable for small to mid-sized deployments, and you can choose to customize when you're ready.

@@ -14,11 +14,14 @@ COPY ./package*.json /app/
 # Install dependencies
 RUN npm install
 
-# Copy .bin files so it can run npm command
+# Copy .bin files so it can run npm command on development
 RUN cp /app/node_modules/.bin/* /usr/local/bin/
 
 # Copy project to container
 COPY . /app
+
+# Setting the port env for non docker compose environments
+ENV PORT=8080
 
 # Start the node dev server
 CMD [ "./run.sh" ]
