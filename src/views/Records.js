@@ -55,8 +55,8 @@ const RecordList = () => {
 
   const handleDelete = async (params) => {
     try {
-      const response = await axios.post("/api/v1/record/delete", {
-        records: params.map((record) => record.id),
+      const response = await axios.delete("/api/v1/records/", {
+        data: { records: params.map((record) => record.id) },
       });
       const data = response?.data;
       setAlert({ type: "success", message: data?.message });

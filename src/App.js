@@ -19,7 +19,7 @@ const App = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("/api/data");
+      const response = await axios.get("/api/auth");
       const data = response.data;
       if (data.logged === true) {
         userState.set({

@@ -41,7 +41,7 @@ const LoginForm = ({ authCallBack }) => {
     setError(null);
 
     try {
-      await axios.post("/api/login", formData, {
+      await axios.post("/api/auth", formData, {
         headers: {
           "Content-Type": "application/json",
         },

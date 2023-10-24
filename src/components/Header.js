@@ -45,7 +45,7 @@ const Header = ({ handleDrawerToggle, logoutHandler }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("/api/logout", {
+      await axios.delete("/api/auth", {
         headers: {
           "Content-Type": "application/json",
         },
