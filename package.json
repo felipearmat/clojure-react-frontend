@@ -11,6 +11,7 @@
     "prettify": "prettier --write ."
   },
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@mui/icons-material": "5.11.16",
     "@mui/x-data-grid": "^6.16.2",
     "axios": "^1.5.1",
