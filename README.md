@@ -1,8 +1,8 @@
-# Front-End for Clojure/React App
+# Flexi-Frontend-React
 
 ## Introduction
 
-This repository contains the front-end Single Page Application (SPA) designed to work seamlessly with the Clojure/React application. For the guide to the entire application, refer to the [Clojure/React App](https://github.com/felipearmat/clojure-react-app).
+Flexi-Frontend-React is a front-end Single Page Application (SPA) designed to seamlessly integrate with the Flexi Apps stack. For a comprehensive guide on the entire Flexi Apps ecosystem, please refer to the [Flexi Apps Documentation](https://github.com/felipearmat/flexi-apps).
 
 This project was created using [Create React App](https://github.com/facebook/create-react-app).
 
@@ -28,15 +28,37 @@ This project consists of the following components:
 
 ### Running the Application
 
-To start this application without the back-end, proxy, and Postgres database, execute the following command:
+To launch this application without the need for the back-end, proxy, and Postgres database, execute the following commands:
 
 ```shell
-docker build . -t clojure-react-app-frontend
+docker build . -t flexi-frontend-react
 
-docker run --rm -it -p 8080:8080 -v ./:/app clojure-react-app-frontend /bin/sh
+docker run --rm -d \
+  -p 8080:8080 \
+  -v ./:/app \
+  --name flexi-frontend-react \
+  flexi-frontend-react
 ```
 
-Once you access the container, you can run the [Available Scripts](#available-scripts).
+This will start a React container in the background.
+
+### Stoping the container
+
+To stop the container, execute the following command:
+
+```shell
+docker stop flexi-frontend-react
+```
+
+### Accessing the container
+
+Once the container is running, you can access it with:
+
+```shell
+docker exec -it flexi-frontend-react /bin/sh
+```
+
+Once on the container terminal, you can run the [Available Scripts](#available-scripts).
 
 ## Available Scripts
 
