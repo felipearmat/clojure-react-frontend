@@ -1,9 +1,7 @@
-import { Button, TextField, Typography, Snackbar, Alert } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { userState } from "../stores/userState";
 import { useState } from "react";
-import axios from "axios";
-import Loading from "./Loading";
+import PropTypes from "prop-types";
 
 const StyledInput = styled(TextField)`
   width: 100%;
@@ -29,34 +27,21 @@ const buttonArrays = [
   [".", "0", "=", "+", "randomstr"],
 ];
 
-const Calculator = () => {
+var historyState = [];
+
+const Calculator = ({ requestHandler }) => {
   const [expression, setExpression] = useState([]);
-  const [history, setHistory] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const handleRequest = async (expression) => {
-    if (!expression) return;
-    setLoading(true);
-
-    try {
-      const response = await axios.post("/api/v1/calculate", { expression });
-      const data = response.data;
-      const newHistory = `${expression} = ${data.result}`;
-      userState.set({
-        balance: data.balance,
-      });
-      setExpression([]);
-      setHistory((prevHistory) => [...prevHistory, newHistory].slice(-10));
-    } catch (error) {
-      setError(error?.response?.data || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const readExpression = (expression) => {
     return (Array.isArray(expression) && expression.join("")) || "";
+  };
+
+  const handleRequest = async (expression) => {
+    const result = await requestHandler(expression);
+    if (!result) return;
+
+    historyState = [...historyState, `${expression} = ${result}`].slice(-10);
+    setExpression([]);
   };
 
   const handleInput = (symbol) => {
@@ -80,51 +65,43 @@ const Calculator = () => {
 
   return (
     <div>
-      <Loading isLoading={loading}>
-        <h4 identificator="calculator-history-title">History:</h4>
-        {history.map((item, index) => (
-          <Typography
-            identificator={`calculator-history-item-${index}`}
-            key={`history${index}`}
-          >
-            {item}
-          </Typography>
-        ))}
-        <form>
-          <StyledInput
-            value={readExpression(expression)}
-            readOnly
-            InputProps={{
-              readOnly: true,
-            }}
-          />
-          {buttonArrays.map((buttonRow, index) => (
-            <div key={`row${index}`} style={{ display: "flex" }}>
-              {buttonRow.map((label) => (
-                <StyledButton
-                  key={`label${label}`}
-                  identificator={`calculator-button-${label}`}
-                  onClick={() => handleInput(label)}
-                >
-                  {label}
-                </StyledButton>
-              ))}
-            </div>
-          ))}
-        </form>
-      </Loading>
-      {error && (
-        <Snackbar
-          identificator="calculator-error-snackbar"
-          open={true}
-          autoHideDuration={5000}
-          onClose={() => setError(null)}
+      <h4 identificator="calculator-history-title">History:</h4>
+      {historyState.map((item, index) => (
+        <Typography
+          identificator={`calculator-history-item-${index}`}
+          key={`history${index}`}
         >
-          <Alert severity="error">{error}</Alert>
-        </Snackbar>
-      )}
+          {item}
+        </Typography>
+      ))}
+      <form>
+        <StyledInput
+          value={readExpression(expression)}
+          readOnly
+          InputProps={{
+            readOnly: true,
+          }}
+        />
+        {buttonArrays.map((buttonRow, index) => (
+          <div key={`row${index}`} style={{ display: "flex" }}>
+            {buttonRow.map((label) => (
+              <StyledButton
+                key={`label${label}`}
+                identificator={`calculator-button-${label}`}
+                onClick={() => handleInput(label)}
+              >
+                {label}
+              </StyledButton>
+            ))}
+          </div>
+        ))}
+      </form>
     </div>
   );
+};
+
+Calculator.propTypes = {
+  requestHandler: PropTypes.func.isRequired,
 };
 
 export default Calculator;

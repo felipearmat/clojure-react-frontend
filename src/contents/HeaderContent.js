@@ -1,9 +1,8 @@
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import { ExitToApp, MenuOpen } from "@mui/icons-material";
+import { formatCurrency } from "../helpers/Util";
 import { styled } from "@mui/system";
-import { userState } from "../stores/userState";
-import { useSyncExternalStore } from "react";
-import axios from "axios";
+import { useState } from "react";
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: "#1976D2",
@@ -36,24 +35,15 @@ const StyledLogoutButton = styled(IconButton)(({ theme }) => ({
   color: "white",
 }));
 
-const userInfo = (email, balance) => {
-  return `${email}   /   Balance: ${Number.parseFloat(balance).toFixed(2)}`;
-};
+const Header = ({ user, handleLogout }) => {
+  const [drawer, setDrawer] = useState(false);
 
-const Header = ({ handleDrawerToggle, logoutHandler }) => {
-  const user = useSyncExternalStore(userState.subscribe, userState.get);
+  const userInfo = (email, balance) => {
+    return `${email}   /   Balance: ${formatCurrency(balance)}`;
+  };
 
-  const handleLogout = async () => {
-    try {
-      await axios.delete("/api/auth", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      logoutHandler();
-    } catch (err) {
-      console.log(err);
-    }
+  const handleDrawerToggle = () => {
+    setDrawer(!drawer);
   };
 
   return (

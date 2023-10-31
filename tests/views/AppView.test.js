@@ -1,10 +1,10 @@
 import { act } from "react-dom/test-utils";
 import { cleanup, fireEvent, render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import App from "../src/App";
+import AppView from "../../src/views/AppView";
 import axios from "axios";
 
-describe("App Component", () => {
+describe("App View", () => {
   afterEach(cleanup);
 
   describe("when user is not logged on startup", () => {
@@ -15,7 +15,7 @@ describe("App Component", () => {
 
       render(
         <MemoryRouter>
-          <App />
+          <AppView />
         </MemoryRouter>
       );
 
@@ -63,7 +63,7 @@ describe("App Component", () => {
 
       render(
         <MemoryRouter>
-          <App />
+          <AppView />
         </MemoryRouter>
       );
 

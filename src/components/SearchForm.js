@@ -10,7 +10,6 @@ import {
   TextField,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { useState } from "react";
 
 const SearchFormContainer = styled(Container)(({ theme }) => ({
   paddingTop: theme.spacing(4),
@@ -20,16 +19,12 @@ const StyledButton = styled(Button)({
   margin: "0 0.75rem",
 });
 
-const SearchForm = ({ searchCallBack, children }) => {
-  const [searchParams, setSearchParams] = useState({
-    operationType: "",
-    operationCost: "",
-    amountOperator: "",
-    amountValue: "",
-    startDate: "",
-    endDate: "",
-  });
-
+const SearchForm = ({
+  searchParams,
+  setSearchParams,
+  searchCallBack,
+  children,
+}) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSearchParams({ ...searchParams, [name]: value });

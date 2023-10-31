@@ -1,7 +1,7 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { useState } from "react";
-import axios from "axios";
+import { userState } from "../stores/userState";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -40,16 +40,11 @@ const LoginForm = ({ authCallBack }) => {
     e.preventDefault();
     setError(null);
 
-    try {
-      await axios.post("/api/auth", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      authCallBack();
-    } catch (err) {
+    const response = await userState.loginUser(formData);
+    if (response?.code) {
       setError("Invalid credentials. Please try again.");
     }
+    authCallBack();
   };
 
   return (

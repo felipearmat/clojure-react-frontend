@@ -8,9 +8,12 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import { navMaker } from "../helpers/Util";
 import { styled } from "@mui/system";
+import { useState } from "react";
+import routes from "../routes";
 
-const SideBar = ({ open, onClose, routes, width = 160 }) => {
+const SideBarContent = ({ width = 160 }) => {
   const StyledDrawer = styled(Drawer)(() => ({
     "& .MuiDrawer-paper": {
       backgroundColor: "#1976d2",
@@ -20,11 +23,19 @@ const SideBar = ({ open, onClose, routes, width = 160 }) => {
     },
   }));
 
+  const [drawer, setDrawer] = useState(false);
+
+  const toggleDrawer = () => {
+    setDrawer(!drawer);
+  };
+
+  const navRoutes = navMaker(routes);
+
   const drawerComp = (
     <Box>
       <Divider />
       <List>
-        {routes.map((route, index) => (
+        {navRoutes.map((route, index) => (
           <ListItem key={`sidebar_item_${index}`} disablePadding>
             <ListItemButton
               key={`sidebar_button_${index}`}
@@ -47,8 +58,8 @@ const SideBar = ({ open, onClose, routes, width = 160 }) => {
     >
       <StyledDrawer
         variant="temporary"
-        open={open}
-        onClose={() => onClose()}
+        open={drawer}
+        onClose={() => toggleDrawer()}
         ModalProps={{
           keepMounted: true,
         }}
@@ -71,4 +82,4 @@ const SideBar = ({ open, onClose, routes, width = 160 }) => {
   );
 };
 
-export default SideBar;
+export default SideBarContent;
