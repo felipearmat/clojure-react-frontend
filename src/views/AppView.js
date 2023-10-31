@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { userState } from "../stores/userState";
+import { userStore } from "../stores/userStore";
 import AppLayout from "../layouts/AppLayout";
 import Footer from "../contents/FooterContent";
 import GlobalCss from "../components/GlobalCss";
@@ -9,19 +9,19 @@ import LoginWrapper from "../components/LoginWrapper";
 import SideBar from "../contents/SideBarContent";
 
 const AppView = () => {
-  const user = useSyncExternalStore(userState.subscribe, userState.get);
+  const user = useSyncExternalStore(userStore.subscribe, userStore.get);
   const [loading, setLoading] = useState(true);
   const ref = useRef(null);
 
   const fetchUserData = async () => {
     setLoading(true);
-    await userState.fetchUserData();
+    await userStore.fetchUserData();
     setLoading(false);
   };
 
   const handleLogout = async () => {
     setLoading(true);
-    await userState.logoutUser();
+    await userStore.logoutUser();
     setLoading(false);
   };
 

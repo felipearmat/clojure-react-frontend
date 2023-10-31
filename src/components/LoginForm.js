@@ -1,7 +1,7 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { useState } from "react";
-import { userState } from "../stores/userState";
+import { userStore } from "../stores/userStore";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -40,7 +40,7 @@ const LoginForm = ({ authCallBack }) => {
     e.preventDefault();
     setError(null);
 
-    const response = await userState.loginUser(formData);
+    const response = await userStore.loginUser(formData);
     if (response?.code) {
       setError("Invalid credentials. Please try again.");
     }

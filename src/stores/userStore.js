@@ -9,7 +9,7 @@ const emitChange = () => {
   }
 };
 
-export const userState = {
+export const userStore = {
   fetchUserData: async function () {
     try {
       const response = await axios.get("/api/auth");

@@ -1,8 +1,8 @@
 import { Alert, Container, Snackbar } from "@mui/material";
+import { recordsStore } from "../stores/recordsStore";
 import { styled } from "@mui/material/styles";
-import { userState } from "../stores/userState";
-import { useState } from "react";
-import axios from "axios";
+import { userStore } from "../stores/userStore";
+import { useState, useSyncExternalStore } from "react";
 import Loading from "../components/Loading";
 import RecordsForm from "../components/RecordsForm";
 
@@ -15,9 +15,12 @@ const StyledContainer = styled(Container)`
 `;
 
 const RecordsContent = () => {
+  const records = useSyncExternalStore(
+    recordsStore.subscribe,
+    recordsStore.get
+  );
   const [alert, setAlert] = useState({ type: "error", message: "" });
   const [lastSearch, setLastSearch] = useState({});
-  const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchParams, setSearchParams] = useState({
     operationType: "",
@@ -28,36 +31,33 @@ const RecordsContent = () => {
     endDate: "",
   });
 
-  const deleteHandler = async (params) => {
-    try {
-      const response = await axios.delete("/api/v1/records/", {
-        data: { records: params.map((record) => record.id) },
-      });
-      const data = response?.data;
-      setAlert({ type: "success", message: data?.message });
-      userState.set({
-        balance: data?.balance,
-      });
-      searchHandler(lastSearch);
-    } catch (error) {
-      setAlert({ type: "error", message: `Error deleting records: ${error}` });
-    }
-  };
-
-  const searchHandler = async (params) => {
+  const searchHandler = (params) => {
     setLoading(true);
     setLastSearch(params);
-    try {
-      const response = await axios.get("/api/v1/records", { params });
-      const data = response?.data?.records;
-      if (Array.isArray(data)) {
-        setRecords(data);
+    recordsStore.fetchRecords(params).then((result) => {
+      if (result.type === "success") {
+        recordsStore.set(result.data);
+      } else {
+        setAlert(result);
       }
-    } catch (error) {
-      setAlert({ type: "error", message: `Error fetching records: ${error}` });
-    } finally {
       setLoading(false);
-    }
+    });
+  };
+
+  const deleteHandler = (records) => {
+    setLoading(true);
+    recordsStore.deleteRecords(records).then((result) => {
+      if (result.type === "success") {
+        setAlert(result);
+        userStore.set({
+          balance: result.balance,
+        });
+        searchHandler(lastSearch);
+      } else {
+        setAlert(result);
+      }
+      setLoading(false);
+    });
   };
 
   return (

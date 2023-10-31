@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
 import { Snackbar, Alert } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { userState } from "../stores/userState";
+import { userStore } from "../stores/userStore";
 import { useState } from "react";
 import axios from "axios";
 import Calculator from "../components/Calculator";
@@ -27,7 +27,7 @@ const CalculatorContent = () => {
       const response = await axios.post("/api/v1/calculate", { expression });
       const data = response.data;
       if (data?.balance) {
-        userState.set({
+        userStore.set({
           balance: data.balance,
         });
       }
