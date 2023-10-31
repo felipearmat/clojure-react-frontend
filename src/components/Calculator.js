@@ -1,6 +1,7 @@
 import { Button, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
+import { calculatorStore } from "../stores/calculatorStore";
 import PropTypes from "prop-types";
 
 const StyledInput = styled(TextField)`
@@ -27,21 +28,15 @@ const buttonArrays = [
   [".", "0", "=", "+", "randomstr"],
 ];
 
-var historyState = [];
-
 const Calculator = ({ requestHandler }) => {
+  const history = useSyncExternalStore(
+    calculatorStore.subscribe,
+    calculatorStore.get
+  );
   const [expression, setExpression] = useState([]);
 
   const readExpression = (expression) => {
     return (Array.isArray(expression) && expression.join("")) || "";
-  };
-
-  const handleRequest = async (expression) => {
-    const result = await requestHandler(expression);
-    if (!result) return;
-
-    historyState = [...historyState, `${expression} = ${result}`].slice(-10);
-    setExpression([]);
   };
 
   const handleInput = (symbol) => {
@@ -53,10 +48,10 @@ const Calculator = ({ requestHandler }) => {
         setExpression((prevExpression) => prevExpression.slice(0, -1));
         break;
       case "randomstr":
-        handleRequest("randomstr");
+        requestHandler("randomstr");
         break;
       case "=":
-        handleRequest(readExpression(expression));
+        requestHandler(readExpression(expression));
         break;
       default:
         setExpression((prevExpression) => [...prevExpression, symbol]);
@@ -66,7 +61,7 @@ const Calculator = ({ requestHandler }) => {
   return (
     <div>
       <h4 identificator="calculator-history-title">History:</h4>
-      {historyState.map((item, index) => (
+      {history.map((item, index) => (
         <Typography
           identificator={`calculator-history-item-${index}`}
           key={`history${index}`}

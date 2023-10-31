@@ -1,9 +1,9 @@
+import { calculatorStore } from "../stores/calculatorStore";
 import { Container } from "@mui/material";
 import { Snackbar, Alert } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { userStore } from "../stores/userStore";
 import { useState } from "react";
-import axios from "axios";
 import Calculator from "../components/Calculator";
 import Loading from "../components/Loading";
 
@@ -23,20 +23,16 @@ const CalculatorContent = () => {
     if (!expression) return;
     setLoading(true);
 
-    try {
-      const response = await axios.post("/api/v1/calculate", { expression });
-      const data = response.data;
-      if (data?.balance) {
+    calculatorStore.calculate(expression).then((response) => {
+      if (response.type === "success" && response.balance) {
         userStore.set({
-          balance: data.balance,
+          balance: response.balance,
         });
+      } else if (response.type === "error") {
+        setError(response.message);
       }
-      return data.result;
-    } catch (error) {
-      setError(error?.response?.data || error.message);
-    } finally {
       setLoading(false);
-    }
+    });
   };
 
   return (
