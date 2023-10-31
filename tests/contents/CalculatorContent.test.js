@@ -1,4 +1,3 @@
-import { MemoryRouter } from "react-router-dom";
 import {
   act,
   cleanup,
@@ -13,11 +12,7 @@ var container = null;
 
 describe("CalculatorContent", () => {
   beforeEach(() => {
-    container = render(
-      <MemoryRouter>
-        <CalculatorContent />
-      </MemoryRouter>
-    ).container;
+    container = render(<CalculatorContent />).container;
   });
 
   afterEach(cleanup);

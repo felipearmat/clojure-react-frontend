@@ -1,5 +1,4 @@
 import { act, cleanup, fireEvent, render } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
 import Calculator from "../../src/components/Calculator";
 
 var targetElement = null;
@@ -10,9 +9,7 @@ describe("Calculator component", () => {
   beforeEach(() => {
     mockRequestHandler = jest.fn().mockResolvedValue(6);
     container = render(
-      <MemoryRouter>
-        <Calculator requestHandler={mockRequestHandler} />
-      </MemoryRouter>
+      <Calculator requestHandler={mockRequestHandler} />
     ).container;
   });
 
@@ -94,9 +91,7 @@ describe("Calculator component", () => {
     it("should handle randomstr input", async () => {
       mockRequestHandler = jest.fn().mockResolvedValue("string");
       container = render(
-        <MemoryRouter>
-          <Calculator requestHandler={mockRequestHandler} />
-        </MemoryRouter>
+        <Calculator requestHandler={mockRequestHandler} />
       ).container;
       fireEvent.click(
         container.querySelector("[identificator='calculator-button-randomstr']")
@@ -113,9 +108,7 @@ describe("Calculator component", () => {
     beforeEach(() => {
       mockRequestHandler = jest.fn().mockResolvedValue(6);
       container = render(
-        <MemoryRouter>
-          <Calculator requestHandler={mockRequestHandler} />
-        </MemoryRouter>
+        <Calculator requestHandler={mockRequestHandler} />
       ).container;
       targetElement = container.querySelector("input[readonly]");
     });
@@ -165,9 +158,7 @@ describe("Calculator component", () => {
     it("should not clear readonly input on null response", async () => {
       mockRequestHandler = jest.fn().mockResolvedValue(null);
       container = render(
-        <MemoryRouter>
-          <Calculator requestHandler={mockRequestHandler} />
-        </MemoryRouter>
+        <Calculator requestHandler={mockRequestHandler} />
       ).container;
 
       targetElement = container.querySelector("input[readonly]");

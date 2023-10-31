@@ -1,7 +1,10 @@
 import { Navigate } from "react-router-dom";
-import AppView from "./views/AppView";
+import React from "react";
 import CalculatorContent from "./contents/CalculatorContent";
 import RecordsContent from "./contents/RecordsContent";
+
+// Avoiding circular imports (routes <- Appview <- SideBarContent <- routes)
+const AppView = React.lazy(() => import("./views/AppView"));
 
 const routes = [
   {
