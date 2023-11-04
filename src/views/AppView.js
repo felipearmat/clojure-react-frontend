@@ -38,7 +38,7 @@ const AppView = () => {
 
   return (
     <>
-      <GlobalCss />;
+      <GlobalCss />
       <AppLayout
         sidebar={<SideBar />}
         header={<Header user={user} handleLogout={handleLogout} />}
