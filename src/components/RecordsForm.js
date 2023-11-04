@@ -1,7 +1,8 @@
 import { Button, Container, IconButton, Typography } from "@mui/material";
-import { formatCurrency } from "../helpers/Util";
+import { formatCurrency, formatDateString } from "../helpers/Util";
 import { styled } from "@mui/system";
 import { useGridApiRef } from "@mui/x-data-grid";
+import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchForm from "./SearchForm";
 import XDataGrid from "./XDataGrid";
@@ -10,14 +11,25 @@ const StyledButton = styled(Button)({
   margin: "0 0.75rem",
 });
 
-const RecordsForm = ({
-  searchParams,
-  setSearchParams,
-  records,
-  searchHandler,
-  deleteHandler,
-}) => {
+var paramsPersister = null;
+
+const RecordsForm = ({ records, searchHandler, deleteHandler }) => {
   const apiRef = useGridApiRef();
+  const [searchParams, setSearchParams] = useState(
+    paramsPersister || {
+      operationType: "",
+      operationCost: "",
+      amountOperator: "",
+      amountValue: "",
+      startDate: "",
+      endDate: "",
+    }
+  );
+
+  const setParams = (newParams) => {
+    paramsPersister = newParams;
+    setSearchParams(newParams);
+  };
 
   const getSelectedRows = (apiRef) => {
     const result = [];
@@ -29,10 +41,6 @@ const RecordsForm = ({
 
   const totalAmount = (records) => {
     return records.reduce((acc, record) => acc + record.amount, 0);
-  };
-
-  const formatDateString = (dateString) => {
-    return new Date(dateString).toISOString().slice(0, 19) + " UTC";
   };
 
   const headers = [
@@ -87,7 +95,7 @@ const RecordsForm = ({
     <>
       <SearchForm
         searchParams={searchParams}
-        setSearchParams={setSearchParams}
+        setSearchParams={setParams}
         searchCallBack={searchHandler}
       >
         <StyledButton
@@ -101,22 +109,20 @@ const RecordsForm = ({
       </SearchForm>
       <Container>
         {records.length > 0 ? (
-          <>
-            <div>
-              <XDataGrid
-                title="Records"
-                rows={records}
-                apiRef={apiRef}
-                columns={headers}
-                pageSizeOptions={[10, 25, 50]}
-                disableRowSelectionOnClick
-                checkboxSelection
-              />
-            </div>
+          <div>
+            <XDataGrid
+              title="Records"
+              rows={records}
+              apiRef={apiRef}
+              columns={headers}
+              pageSizeOptions={[10, 25, 50]}
+              disableRowSelectionOnClick
+              checkboxSelection
+            />
             <Typography>
               Total Amount: {formatCurrency(totalAmount(records))}
             </Typography>
-          </>
+          </div>
         ) : (
           <Typography variant="h6" gutterBottom>
             No records available.

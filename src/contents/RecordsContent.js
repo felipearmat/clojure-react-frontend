@@ -22,14 +22,6 @@ const RecordsContent = () => {
   const [alert, setAlert] = useState({ type: "error", message: "" });
   const [lastSearch, setLastSearch] = useState({});
   const [loading, setLoading] = useState(false);
-  const [searchParams, setSearchParams] = useState({
-    operationType: "",
-    operationCost: "",
-    amountOperator: "",
-    amountValue: "",
-    startDate: "",
-    endDate: "",
-  });
 
   const searchHandler = (params) => {
     setLoading(true);
@@ -65,22 +57,20 @@ const RecordsContent = () => {
       <Loading isLoading={loading}>
         <RecordsForm
           records={records}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
           searchHandler={searchHandler}
           deleteHandler={deleteHandler}
         />
+        {alert.message && (
+          <Snackbar
+            identificator="records-error-snackbar"
+            open={true}
+            autoHideDuration={5000}
+            onClose={() => setAlert({ type: "error", message: "" })}
+          >
+            <Alert severity={alert.type}>{alert.message}</Alert>
+          </Snackbar>
+        )}
       </Loading>
-      {alert.message && (
-        <Snackbar
-          identificator="records-error-snackbar"
-          open={true}
-          autoHideDuration={5000}
-          onClose={() => setAlert({ type: "error", message: "" })}
-        >
-          <Alert severity={alert.type}>{alert.message}</Alert>
-        </Snackbar>
-      )}
     </StyledContainer>
   );
 };
