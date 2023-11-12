@@ -1,5 +1,5 @@
 import React from "react";
-import { act, cleanup, fireEvent, render } from "@testing-library/react";
+import { cleanup, fireEvent, render, waitFor } from "@testing-library/react";
 import Calculator from "../../src/components/Calculator";
 
 var targetElement = null;
@@ -97,11 +97,12 @@ describe("Calculator component", () => {
       fireEvent.click(
         container.querySelector("[identificator='calculator-button-randomstr']")
       );
-      await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
 
-      expect(targetElement).toHaveValue("1");
-      expect(mockRequestHandler).toHaveBeenCalledTimes(1);
-      expect(mockRequestHandler).toHaveBeenCalledWith("randomstr");
+      await waitFor(() => {
+        expect(targetElement).toHaveValue("1");
+        expect(mockRequestHandler).toHaveBeenCalledTimes(1);
+        expect(mockRequestHandler).toHaveBeenCalledWith("randomstr");
+      });
     });
   });
 
@@ -125,9 +126,10 @@ describe("Calculator component", () => {
         container.querySelector("[identificator='calculator-button-=']")
       );
 
-      await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
-      targetElement = container.querySelector("input[readonly]");
-      expect(targetElement).toHaveValue("");
+      await waitFor(() => {
+        targetElement = container.querySelector("input[readonly]");
+        expect(targetElement).toHaveValue("");
+      });
     });
 
     it("doesn't clear input on calculation error", async () => {
@@ -146,9 +148,10 @@ describe("Calculator component", () => {
         container.querySelector("[identificator='calculator-button-=']")
       );
 
-      await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
-      targetElement = container.querySelector("input[readonly]");
-      expect(targetElement).toHaveValue("4+");
+      await waitFor(() => {
+        targetElement = container.querySelector("input[readonly]");
+        expect(targetElement).toHaveValue("4+");
+      });
     });
   });
 });

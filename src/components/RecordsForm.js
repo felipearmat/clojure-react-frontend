@@ -43,6 +43,9 @@ const RecordsForm = ({ records, searchHandler, deleteHandler }) => {
     return records.reduce((acc, record) => acc + record.amount, 0);
   };
 
+  const identificator = (params) =>
+    `delete_${params.row.operation_type}_id_${params.id}`;
+
   const headers = [
     {
       field: "created_at",
@@ -84,7 +87,11 @@ const RecordsForm = ({ records, searchHandler, deleteHandler }) => {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <IconButton color="error" onClick={() => deleteHandler([params])}>
+        <IconButton
+          color="error"
+          identificator={identificator(params)}
+          onClick={() => deleteHandler([params])}
+        >
           <DeleteIcon />
         </IconButton>
       ),
@@ -99,6 +106,7 @@ const RecordsForm = ({ records, searchHandler, deleteHandler }) => {
         searchCallBack={searchHandler}
       >
         <StyledButton
+          identificator="records-form-delete"
           variant="contained"
           color="secondary"
           startIcon={<DeleteIcon />}

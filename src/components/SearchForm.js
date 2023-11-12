@@ -39,7 +39,7 @@ const SearchForm = ({
   };
 
   return (
-    <SearchFormContainer>
+    <SearchFormContainer identificator="search-form">
       <form>
         <Grid container mt={3} mb={4} spacing={1}>
           <Grid item xs={12} sm={6}>
@@ -93,6 +93,7 @@ const SearchForm = ({
         </Grid>
         <Box mt={2} textAlign="center">
           <StyledButton
+            identificator="search-form-search"
             variant="contained"
             color="primary"
             onClick={() => searchCallBack(filteredParams())}
