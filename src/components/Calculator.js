@@ -28,15 +28,24 @@ const buttonArrays = [
   [".", "0", "=", "+", "randomstr"],
 ];
 
+var expressionPersister = null;
+
 const Calculator = ({ requestHandler }) => {
   const history = useSyncExternalStore(
     calculatorStore.subscribe,
     calculatorStore.get
   );
-  const [expression, setExpression] = useState([]);
+  const [expression, setExpression] = useState(expressionPersister || []);
 
   const readExpression = (expression) => {
     return (Array.isArray(expression) && expression.join("")) || "";
+  };
+
+  const handleRequest = (expression) => {
+    const promise = requestHandler(expression);
+    promise?.then((response) => {
+      if (response) setExpression([]);
+    });
   };
 
   const handleInput = (symbol) => {
@@ -48,10 +57,10 @@ const Calculator = ({ requestHandler }) => {
         setExpression((prevExpression) => prevExpression.slice(0, -1));
         break;
       case "randomstr":
-        requestHandler("randomstr");
+        handleRequest("randomstr");
         break;
       case "=":
-        requestHandler(readExpression(expression));
+        handleRequest(readExpression(expression));
         break;
       default:
         setExpression((prevExpression) => [...prevExpression, symbol]);
@@ -73,6 +82,7 @@ const Calculator = ({ requestHandler }) => {
         <StyledInput
           value={readExpression(expression)}
           readOnly
+          identificator={"calculator-input"}
           InputProps={{
             readOnly: true,
           }}

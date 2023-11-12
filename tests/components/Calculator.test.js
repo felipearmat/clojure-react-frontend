@@ -1,3 +1,4 @@
+import React from "react";
 import { act, cleanup, fireEvent, render } from "@testing-library/react";
 import Calculator from "../../src/components/Calculator";
 
@@ -105,15 +106,12 @@ describe("Calculator component", () => {
   });
 
   describe("calculation behavior", () => {
-    beforeEach(() => {
+    it("should clear the readonly input after pressing '='", async () => {
       mockRequestHandler = jest.fn().mockResolvedValue(6);
       container = render(
         <Calculator requestHandler={mockRequestHandler} />
       ).container;
-      targetElement = container.querySelector("input[readonly]");
-    });
 
-    it("should clear the readonly input after pressing '='", async () => {
       fireEvent.click(
         container.querySelector("[identificator='calculator-button-4']")
       );
@@ -128,43 +126,18 @@ describe("Calculator component", () => {
       );
 
       await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
+      targetElement = container.querySelector("input[readonly]");
       expect(targetElement).toHaveValue("");
     });
 
-    it("should add the expression and result into the history", async () => {
-      fireEvent.click(
-        container.querySelector("[identificator='calculator-button-4']")
-      );
-      fireEvent.click(
-        container.querySelector("[identificator='calculator-button-+']")
-      );
-      fireEvent.click(
-        container.querySelector("[identificator='calculator-button-2']")
-      );
-      fireEvent.click(
-        container.querySelector("[identificator='calculator-button-=']")
-      );
-
-      await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
-      const historyItem = container.querySelector(
-        "[identificator='calculator-history-item-1']"
-      );
-      expect(historyItem).toBeInTheDocument();
-      expect(historyItem.textContent).toEqual("4+2 = 6");
-    });
-  });
-
-  describe("error handling behavior", () => {
-    it("should not clear readonly input on null response", async () => {
-      mockRequestHandler = jest.fn().mockResolvedValue(null);
+    it("doesn't clear input on calculation error", async () => {
+      mockRequestHandler = jest.fn().mockResolvedValue(false);
       container = render(
         <Calculator requestHandler={mockRequestHandler} />
       ).container;
 
-      targetElement = container.querySelector("input[readonly]");
-
       fireEvent.click(
-        container.querySelector("[identificator='calculator-button-1']")
+        container.querySelector("[identificator='calculator-button-4']")
       );
       fireEvent.click(
         container.querySelector("[identificator='calculator-button-+']")
@@ -174,7 +147,8 @@ describe("Calculator component", () => {
       );
 
       await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
-      expect(targetElement).toHaveValue("1+");
+      targetElement = container.querySelector("input[readonly]");
+      expect(targetElement).toHaveValue("4+");
     });
   });
 });

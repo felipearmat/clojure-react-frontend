@@ -19,20 +19,25 @@ const CalculatorContent = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const requestHandler = async (expression) => {
+  const requestHandler = (expression) => {
     if (!expression) return;
     setLoading(true);
 
-    calculatorStore.calculate(expression).then((response) => {
-      if (response.type === "success" && response.balance) {
-        userStore.set({
-          balance: response.balance,
-        });
-      } else if (response.type === "error") {
-        setError(response.message);
-      }
-      setLoading(false);
-    });
+    calculatorStore
+      .calculate(expression)
+      .then((response) => {
+        if (response.type === "success" && response.balance) {
+          userStore.set({
+            balance: response.balance,
+          });
+          return true;
+        } else if (response.type === "error") {
+          setError(response.message);
+        }
+      })
+      .finally((e) => {
+        setLoading(false);
+      });
   };
 
   return (

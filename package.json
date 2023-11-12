@@ -6,6 +6,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
+    "test:watch": "jest --watchAll",
     "eject": "react-scripts eject",
     "lint": "eslint ./src",
     "prettify": "prettier --write ."
