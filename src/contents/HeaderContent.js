@@ -2,7 +2,7 @@ import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import { ExitToApp, MenuOpen } from "@mui/icons-material";
 import { formatCurrency } from "../helpers/Util";
 import { styled } from "@mui/system";
-import { useState } from "react";
+import { drawerStore } from "../stores/drawerStore";
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: "#1976D2",
@@ -36,14 +36,8 @@ const StyledLogoutButton = styled(IconButton)(({ theme }) => ({
 }));
 
 const Header = ({ user, handleLogout }) => {
-  const [drawer, setDrawer] = useState(false);
-
   const userInfo = (email, balance) => {
     return `${email}   /   Balance: ${formatCurrency(balance)}`;
-  };
-
-  const handleDrawerToggle = () => {
-    setDrawer(!drawer);
   };
 
   return (
@@ -51,20 +45,28 @@ const Header = ({ user, handleLogout }) => {
       <StyledToolbar>
         <IconButton
           color="inherit"
+          identificator="header-open-drawer"
           aria-label="open drawer"
           edge="start"
-          onClick={handleDrawerToggle}
+          onClick={drawerStore.toggle}
           sx={{ mr: 2, display: { sm: "none" } }}
         >
           <MenuOpen />
         </IconButton>
-        <StyledTypography variant="h6">
+        <StyledTypography identificator="header-title" variant="h6">
           ArithmeticCalculatorAPI
         </StyledTypography>
         {user.authenticated && (
           <>
-            {user.email && <Data>{userInfo(user.email, user.balance)}</Data>}
-            <StyledLogoutButton onClick={handleLogout}>
+            {user.email && (
+              <Data identificator="header-user-info">
+                {userInfo(user.email, user.balance)}
+              </Data>
+            )}
+            <StyledLogoutButton
+              identificator="header-logout"
+              onClick={handleLogout}
+            >
               <ExitToApp />
             </StyledLogoutButton>
           </>

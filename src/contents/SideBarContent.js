@@ -10,8 +10,9 @@ import {
 import { Link } from "react-router-dom";
 import { navMaker } from "../helpers/Util";
 import { styled } from "@mui/system";
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import routes from "../routes";
+import { drawerStore } from "../stores/drawerStore";
 
 const SideBarContent = ({ width = 160 }) => {
   const StyledDrawer = styled(Drawer)(() => ({
@@ -22,13 +23,7 @@ const SideBarContent = ({ width = 160 }) => {
       width: width,
     },
   }));
-
-  const [drawer, setDrawer] = useState(false);
-
-  const toggleDrawer = () => {
-    setDrawer(!drawer);
-  };
-
+  const drawer = useSyncExternalStore(drawerStore.subscribe, drawerStore.get);
   const navRoutes = navMaker(routes);
 
   const drawerComp = (
@@ -39,6 +34,7 @@ const SideBarContent = ({ width = 160 }) => {
           <ListItem key={`sidebar_item_${index}`} disablePadding>
             <ListItemButton
               key={`sidebar_button_${index}`}
+              identifier={`side-bar-button-${index}`}
               component={Link}
               to={route.path}
             >
@@ -58,8 +54,9 @@ const SideBarContent = ({ width = 160 }) => {
     >
       <StyledDrawer
         variant="temporary"
+        identifier="side-bar-content-xs-drawer"
         open={drawer}
-        onClose={() => toggleDrawer()}
+        onClose={drawerStore.toggle}
         ModalProps={{
           keepMounted: true,
         }}
@@ -71,6 +68,7 @@ const SideBarContent = ({ width = 160 }) => {
       </StyledDrawer>
       <StyledDrawer
         variant="permanent"
+        identifier="side-bar-content-sm-drawer"
         sx={{
           display: { xs: "none", sm: "block" },
         }}
