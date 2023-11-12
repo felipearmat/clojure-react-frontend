@@ -1,7 +1,7 @@
 import React from "react";
 import SideBarContent from "../../src/contents/SideBarContent";
 import { MemoryRouter } from "react-router-dom";
-import { act, render, waitFor, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 function mockNavMaker(_routes) {
   return [
