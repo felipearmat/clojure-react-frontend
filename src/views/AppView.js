@@ -6,7 +6,7 @@ import Footer from "../contents/FooterContent";
 import GlobalCss from "../components/GlobalCss";
 import Header from "../contents/HeaderContent";
 import LoginWrapper from "../components/LoginWrapper";
-import SideBar from "../contents/SideBarContent";
+import SideBarContent from "../contents/SideBarContent";
 
 const AppView = () => {
   const user = useSyncExternalStore(userStore.subscribe, userStore.get);
@@ -40,7 +40,7 @@ const AppView = () => {
     <>
       <GlobalCss />
       <AppLayout
-        sidebar={<SideBar />}
+        sidebar={<SideBarContent />}
         header={<Header user={user} handleLogout={handleLogout} />}
         content={
           <LoginWrapper
